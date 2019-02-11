@@ -232,7 +232,7 @@ $ kubectl create -f deployments/tyk-pump.yaml
 Create a config map for `tib.conf`:
 
 ```
-$ kubectl create configmap tyk-identity-broker-conf--from-file=tib.conf --namespace=tyk
+$ kubectl create configmap tyk-identity-broker-conf --from-file=tib.conf --namespace=tyk
 ```
 
 Initialize the deployment and service:
