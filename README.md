@@ -1,6 +1,6 @@
 # Tyk + Kubernetes integration
 
-This guide will walk you through a Kubernetes-based Tyk setup. It also covers the required steps to configure and use a Redis cluster and a MongoDB instance. This fork remove use of Google Cloud persistent disks and uses
+This guide will walk you through a Kubernetes-based Tyk setup. It also covers the required steps to configure and use a Redis cluster and a MongoDB instance. This fork removes use of Google Cloud persistent disks and uses
 directory volumes instead for local deployment/testing. Instructions for Tyk Identity Broker have also been added.
 
 # TODO: 
