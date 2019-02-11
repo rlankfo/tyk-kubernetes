@@ -38,9 +38,8 @@ spec:
               mountPath: "/var/lib/redis"
       volumes:
         - name: "redis-data"
-          gcePersistentDisk:
-            pdName: "redis-4"
-            fsType: ext4
+          hostPath:
+            path: "/mnt/redis-4"
         - name: "redis-conf"
           configMap:
             name: "redis-conf"

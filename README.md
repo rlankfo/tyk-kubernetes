@@ -1,11 +1,10 @@
 # Tyk + Kubernetes integration
 
-This guide will walk you through a Kubernetes-based Tyk setup. It also covers the required steps to configure and use a Redis cluster and a MongoDB instance.
+This guide will walk you through a Kubernetes-based Tyk setup. It also covers the required steps to configure and use a Redis cluster and a MongoDB instance. This fork remove use of Google Cloud persistent disks and uses
+directory volumes instead for local deployment/testing. Instructions for Tyk Identity Broker have also been added.
 
-# Requirements
-
-- A fresh Google Cloud Platform project and credentials, see the ["Creating a project via the Cloud Platform Console" section](https://cloud.google.com/resource-manager/docs/creating-project).
-- The Google Cloud Platform CLI tool, download [here](https://cloud.google.com/sdk/).
+# TODO: 
+Keycloak setup
 
 # Getting Started
 
@@ -13,8 +12,15 @@ Clone this repository in your workspace:
 
 ```
 $ cd ~
-$ git clone https://github.com/TykTechnologies/tyk-kubernetes.git
+$ git clone https://github.com/rlankfo/tyk-kubernetes.git
 $ cd tyk-kubernetes
+```
+
+Make folders for dirctory hostPath volumes:
+
+```
+cd /mnt
+mkdir mongo redis-1 redis-2 redis-3 redis-4 redis-5 redis-6 tyk-dashboard tyk-gateway tyk-identity-broker tyk-pump
 ```
 
 # Redis setup
@@ -29,14 +35,6 @@ Initialize the `redis` namespace:
 
 ```
 $ kubectl create -f namespaces
-```
-
-We will create the disks for our Redis instances:
-
-```
-$ gcloud compute disks create --size=10GB \
-    'redis-1' 'redis-2' 'redis-3' \
-    'redis-4' 'redis-5' 'redis-6'
 ```
 
 Then we import the Redis configuration:
@@ -110,12 +108,6 @@ Initialize the Mongo namespace:
 $ kubectl create -f namespaces
 ```
 
-Create a volume for MongoDB:
-
-```
-$ gcloud compute disks create --size=10GB mongo-volume
-```
-
 Initialize the deployment and service:
 
 ```
@@ -138,12 +130,6 @@ $ kubectl create -f namespaces
 ```
 
 ## Dashboard setup
-
-Create a volume for the dashboard:
-
-```
-$ gcloud compute disks create --size=10GB tyk-dashboard
-```
 
 Set your license key in `tyk_analytics.conf`:
 
@@ -214,12 +200,6 @@ You should be able to access the dashboard now.
 
 ## Gateway setup
 
-Create a volume for the gateway:
-
-```
-$ gcloud compute disks create --size=10GB tyk-gateway
-```
-
 Create a config map for `tyk.conf`:
 
 ```
@@ -240,10 +220,25 @@ Create a config map for `pump.conf`:
 ```
 $ kubectl create configmap tyk-pump-conf --from-file=pump.conf --namespace=tyk
 ```
+
 Initialize the pump deployment:
 
 ```
 $ kubectl create -f deployments/tyk-pump.yaml
+```
+
+## Identity Broker (TIB) setup
+
+Create a config map for `tib.conf`:
+
+```
+$ kubectl create configmap tyk-identity-broker-conf--from-file=tib.conf --namespace=tyk
+```
+
+Initialize the deployment and service:
+```
+$ kubectl create -f deployments/tib.yaml
+$ kubectl create -f services/tib.yaml
 ```
 
 # FAQ

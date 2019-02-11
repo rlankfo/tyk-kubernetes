@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tib
+  namespace: tyk
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tib
+    spec:
+      containers:
+      - image:  tykio/tyk-identity-broker:latest
+        imagePullPolicy: Always
+        name: tyk-identity-broker
+        command: ["/opt/tyk-identity-broker/tyk-identity-broker", "-c", "/etc/tyk-identity-broker/tib.conf"]
+        workingDir: "/opt/tyk-identity-broker/tib.conf"
+        ports:
+        - containerPort: 3010
+        volumeMounts:
+          - name: tyk-identity-broker-conf
+            mountPath: /etc/tyk-identity-broker
+      volumes:
+        - name: tyk-identity-broker-volume
+          hostPath:
+            path: /mnt/tyk-identity-broker
+        - name: tyke-identity-broker-conf
+          configMap:
+            name: tyk-identity-broker-conf
+            items:
+              - key: tib.conf
+                path: tib.conf

@@ -26,9 +26,8 @@ spec:
             mountPath: /etc/tyk-dashboard
       volumes:
         - name: tyk-dashboard-volume
-          gcePersistentDisk:
-            pdName: tyk-dashboard
-            fsType: ext4
+          hostPath:
+            path: /mnt/tyk-dashboard
         - name: tyk-dashboard-conf
           configMap:
             name: tyk-dashboard-conf

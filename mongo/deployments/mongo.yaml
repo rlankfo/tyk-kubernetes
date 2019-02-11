@@ -22,6 +22,5 @@ spec:
             mountPath: /data/db
       volumes:
         - name: mongo-volume
-          gcePersistentDisk:
-            pdName: mongo-volume
-            fsType: ext4
+          hostPath:
+            path: /mnt/mongo

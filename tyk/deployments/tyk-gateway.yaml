@@ -28,9 +28,8 @@ spec:
             mountPath: /etc/tyk-gateway
       volumes:
         - name: tyk-gateway-apps
-          gcePersistentDisk:
-            pdName: tyk-gateway
-            fsType: ext4
+          hostPath:
+            path: /mnt/tyk-gateway
         - name: tyk-gateway-conf
           configMap:
             name: tyk-gateway-conf
