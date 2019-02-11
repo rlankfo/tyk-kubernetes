@@ -15,7 +15,7 @@ spec:
         imagePullPolicy: Always
         name: tyk-identity-broker
         command: ["/opt/tyk-identity-broker/tyk-identity-broker", "-c", "/etc/tyk-identity-broker/tib.conf"]
-        workingDir: "/opt/tyk-identity-broker/tib.conf"
+        workingDir: /opt/tyk-identity-broker/
         ports:
         - containerPort: 3010
         volumeMounts:
@@ -25,7 +25,7 @@ spec:
         - name: tyk-identity-broker-volume
           hostPath:
             path: /mnt/tyk-identity-broker
-        - name: tyke-identity-broker-conf
+        - name: tyk-identity-broker-conf
           configMap:
             name: tyk-identity-broker-conf
             items:

@@ -9,5 +9,5 @@ spec:
     targetPort: 3010
     protocol: TCP
   selector:
-    app: tyk-identity-broker
+    app: tib
   type: LoadBalancer
