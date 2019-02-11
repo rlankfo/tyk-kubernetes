@@ -19,8 +19,8 @@ $ cd tyk-kubernetes
 Make folders for dirctory hostPath volumes:
 
 ```
-cd /mnt
-mkdir mongo redis-1 redis-2 redis-3 redis-4 redis-5 redis-6 tyk-dashboard tyk-gateway tyk-identity-broker tyk-pump
+$ cd /mnt
+$ mkdir mongo redis-1 redis-2 redis-3 redis-4 redis-5 redis-6 tyk-dashboard tyk-gateway tyk-identity-broker tyk-pump
 ```
 
 # Redis setup
