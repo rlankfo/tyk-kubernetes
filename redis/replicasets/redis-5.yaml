@@ -38,8 +38,8 @@ spec:
               mountPath: "/var/lib/redis"
       volumes:
         - name: "redis-data"
-          hostPath:
-            path: "/mnt/redis-5"
+          persistentVolumeClaim:
+            claimName: "redis-5"
         - name: "redis-conf"
           configMap:
             name: "redis-conf"

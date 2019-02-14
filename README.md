@@ -1,7 +1,7 @@
-# Tyk + Kubernetes integration
+# Tyk + Kubernetes + Keycloak integration
 
 This guide will walk you through a Kubernetes-based Tyk setup. It also covers the required steps to configure and use a Redis cluster and a MongoDB instance. This fork removes use of Google Cloud persistent disks and uses
-directory volumes instead for local deployment/testing. Instructions for Tyk Identity Broker have also been added.
+AWS Elastic Block Storage instead. Instructions for Tyk Identity Broker have also been added.
 
 # TODO: 
 Keycloak setup
@@ -16,13 +16,6 @@ $ git clone https://github.com/rlankfo/tyk-kubernetes.git
 $ cd tyk-kubernetes
 ```
 
-Make folders for dirctory hostPath volumes:
-
-```
-$ cd /mnt
-$ mkdir mongo redis-1 redis-2 redis-3 redis-4 redis-5 redis-6 tyk-dashboard tyk-gateway tyk-identity-broker tyk-pump
-```
-
 # Redis setup
 
 Enter the `redis` directory:
@@ -35,6 +28,54 @@ Initialize the `redis` namespace:
 
 ```
 $ kubectl create -f namespaces
+```
+
+Switch context to new redis namespace:
+
+```
+$ kubectl config use-context redis
+```
+
+Create ebs storage class if you don't have one:
+
+```
+$ kubectl create -f - <<EOF
+{
+    "kind": "StorageClass",
+    "apiVersion": "storage.k8s.io/v1beta1",
+    "metadata": {
+        "name": "ebs"
+    },
+    "provisioner": "kubernetes.io/aws-ebs"
+}
+EOF
+```
+
+Create persistent volume claim for each EBS disk since nodes are spread across availability zones:
+
+```
+$ kubectl create -f - <<EOF
+{
+  "kind": "PersistentVolumeClaim",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "redis-<N>",
+    "annotations": {
+        "volume.alpha.kubernetes.io/storage-class": "ebs"
+    }
+  },
+  "spec": {
+    "accessModes": [
+      "ReadWriteOnce"
+    ],
+    "resources": {
+      "requests": {
+        "storage": "10Gi"
+      }
+    }
+  }
+}
+EOF
 ```
 
 Then we import the Redis configuration:
