@@ -22,5 +22,5 @@ spec:
             mountPath: /data/db
       volumes:
         - name: mongo-volume
-          hostPath:
-            path: /mnt/mongo
+          persistentVolumeClaim:
+            claimName: mongo

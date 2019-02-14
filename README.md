@@ -149,6 +149,39 @@ Initialize the Mongo namespace:
 $ kubectl create -f namespaces
 ```
 
+Switch context to new redis namespace:
+
+```
+$ kubectl config use-context mongo
+```
+
+Create persistent volume claim for mongo:
+
+```
+$ kubectl create -f - <<EOF
+{
+  "kind": "PersistentVolumeClaim",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mongo",
+    "annotations": {
+        "volume.alpha.kubernetes.io/storage-class": "ebs"
+    }
+  },
+  "spec": {
+    "accessModes": [
+      "ReadWriteOnce"
+    ],
+    "resources": {
+      "requests": {
+        "storage": "10Gi"
+      }
+    }
+  }
+}
+EOF
+```
+
 Initialize the deployment and service:
 
 ```
