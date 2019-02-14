@@ -26,8 +26,8 @@ spec:
             mountPath: /etc/tyk-dashboard
       volumes:
         - name: tyk-dashboard-volume
-          hostPath:
-            path: /mnt/tyk-dashboard
+          persistentVolumeClaim:
+            claimName: tyk-dashboard
         - name: tyk-dashboard-conf
           configMap:
             name: tyk-dashboard-conf

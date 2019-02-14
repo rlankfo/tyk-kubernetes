@@ -30,7 +30,7 @@ Initialize the `redis` namespace:
 $ kubectl create -f namespaces
 ```
 
-Switch context to new redis namespace:
+Switch to new redis namespace:
 
 ```
 $ kubectl config set-context $(kubectl config current-context) --namespace=redis
@@ -149,7 +149,7 @@ Initialize the Mongo namespace:
 $ kubectl create -f namespaces
 ```
 
-Switch context to new redis namespace:
+Use new redis namespace:
 
 ```
 $ kubectl config set-context $(kubectl config current-context) --namespace=mongo
@@ -203,7 +203,41 @@ Initialize the Tyk namespace:
 $ kubectl create -f namespaces
 ```
 
+
+Use new tyk namespace:
+
+```
+$ kubectl config set-context $(kubectl config current-context) --namespace=tyk
+```
+
 ## Dashboard setup
+
+Create persistent volume claim for tyk dashboard:
+
+```
+$ kubectl create -f - <<EOF
+{
+  "kind": "PersistentVolumeClaim",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "tyk-dashboard",
+    "annotations": {
+        "volume.alpha.kubernetes.io/storage-class": "ebs"
+    }
+  },
+  "spec": {
+    "accessModes": [
+      "ReadWriteOnce"
+    ],
+    "resources": {
+      "requests": {
+        "storage": "10Gi"
+      }
+    }
+  }
+}
+EOF
+```
 
 Set your license key in `tyk_analytics.conf`:
 
