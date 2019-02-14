@@ -33,7 +33,7 @@ $ kubectl create -f namespaces
 Switch context to new redis namespace:
 
 ```
-$ kubectl config use-context redis
+$ kubectl config set-context $(kubectl config current-context) --namespace=redis
 ```
 
 Create ebs storage class if you don't have one:
@@ -152,7 +152,7 @@ $ kubectl create -f namespaces
 Switch context to new redis namespace:
 
 ```
-$ kubectl config use-context mongo
+$ kubectl config set-context $(kubectl config current-context) --namespace=mongo
 ```
 
 Create persistent volume claim for mongo:
